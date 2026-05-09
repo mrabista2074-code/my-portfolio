@@ -1,0 +1,18 @@
+/* src/index.css */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400&display=swap');
+
+/* Tailwind base styles */
+@import "tailwindcss";
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Default body styles */
+body {
+  background-color: #faf9f7;
+  color: #2c2c2a;
+  font-family: 'DM Sans', sans-serif;
+}
