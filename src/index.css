@@ -1,15 +1,36 @@
 /* src/index.css */
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=DM+Sans:wght@300;400&display=swap');
+/* Import Google Fonts for editorial serifs and crisp sans-serif text */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 /* Tailwind base styles */
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #FAF9F6;      /* Luxurious Alabaster */
+  --bg-secondary: #F3F1EC;    /* Warm Sand */
+  --text-primary: #1C1C1A;    /* Deep Charcoal */
+  --text-secondary: #706F6A;  /* Soft Warm Grey */
+  --border-color: #E2DFD8;    /* Muted Linen Border */
+  --accent-color: #8C7A6B;    /* Warm Antique Bronze */
+  --accent-light: #F4EFEA;    /* Soft Sand Highlight */
+  --card-bg: #FFFFFF;
+  --overlay-bg: rgba(250, 249, 246, 0.95);
+  --cursor-blend: difference;
+}
+
+
+
+
 @theme {
-  --color-cream: #faf9f7;
-  --color-warm: #f4f2ee;
-  --color-muted: #888780;
-  --color-border: #e0ded8;
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-color: var(--border-color);
+  --color-accent-color: var(--accent-color);
+  --color-accent-light: var(--accent-light);
+  --color-card-bg: var(--card-bg);
+  --color-overlay-bg: var(--overlay-bg);
 
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "DM Sans", sans-serif;
@@ -18,11 +39,152 @@
 /* Smooth scrolling for the whole page */
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Keep navbar offset */
 }
 
 /* Default body styles */
 body {
-  background-color: #faf9f7;
-  color: #2c2c2a;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'DM Sans', sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  overflow-x: hidden;
 }
+
+/* Custom Scrollbar for a sleek look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* Custom text selection colors */
+::selection {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+}
+
+/* Custom animations & transition classes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes clipReveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-clip-reveal {
+  animation: clipReveal 1.6s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+.animation-delay-600 {
+  animation-delay: 600ms;
+}
+
+/* Elegant custom hover states */
+.underline-hover {
+  position: relative;
+}
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: currentColor;
+  transform-origin: bottom right;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.underline-hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Custom cursor styling classes */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.custom-cursor-circle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--accent-color);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out, width 0.25s, height 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+/* Hover state for custom cursor */
+.custom-cursor-active .custom-cursor-circle {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(140, 122, 107, 0.1);
+  border-color: transparent;
+}
+.custom-cursor-active .custom-cursor-dot {
+  width: 10px;
+  height: 10px;
+}

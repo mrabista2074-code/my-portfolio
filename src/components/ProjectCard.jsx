@@ -1,35 +1,48 @@
 // src/components/ProjectCard.jsx
-// A single project card in the grid.
-// It receives "project" data and "onClick" (what happens when you click it)
+// A single project card in the staggered portfolio grid
 
 function ProjectCard({ project, onClick }) {
   return (
-    // group allows child elements to react to hover on this parent
     <div
-      className="cursor-pointer group"
-      onClick={onClick}   // when clicked, run the onClick function from parent
+      className="cursor-pointer group flex flex-col"
+      onClick={onClick}
+      // Add custom mouse cursor class during hover
+      onMouseEnter={() => document.body.classList.add("custom-cursor-active")}
+      onMouseLeave={() => document.body.classList.remove("custom-cursor-active")}
     >
-      {/* Image container - overflow-hidden clips the zoom effect */}
-      <div className="overflow-hidden aspect-[4/3] bg-gray-100">
+      {/* Visual Image Box with Overflow Clipping */}
+      <div className="overflow-hidden aspect-[3/4] bg-bg-secondary relative border border-border-color/30">
         <img
           src={project.coverImage}
           alt={project.title}
-          // scale-105 on hover gives a subtle zoom effect
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-[1.8s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+          loading="lazy"
         />
+        
+        {/* Soft, luxury glassmorphic overlay on hover */}
+        <div className="absolute inset-0 bg-bg-primary/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center pointer-events-none">
+          <div className="bg-bg-primary/95 text-text-primary px-6 py-3 border border-border-color/45 shadow-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 text-xs tracking-[0.25em] uppercase font-medium">
+            View Space
+          </div>
+        </div>
+
+        {/* Top category label floating */}
+        <div className="absolute top-4 left-4 bg-bg-primary/90 backdrop-blur-sm text-[10px] tracking-widest text-text-secondary uppercase px-3 py-1 font-medium border border-border-color/20">
+          {project.category}
+        </div>
       </div>
 
-      {/* Card text below the image */}
-      <div className="pt-4">
-        <h3 className="font-serif text-xl font-light text-gray-900">
+      {/* Title block beneath image */}
+      <div className="pt-5 flex items-baseline justify-between">
+        <h3 className="font-serif text-2xl font-light text-text-primary group-hover:text-accent-color transition-colors duration-300">
           {project.title}
         </h3>
-        <p className="text-xs tracking-widest uppercase text-muted mt-1">
-          {project.category} · {project.year}
-        </p>
+        <span className="text-xs font-serif text-text-secondary italic">
+          {project.year}
+        </span>
       </div>
     </div>
   );
 }
 
-export default ProjectCard;
+export default ProjectCard;
