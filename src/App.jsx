@@ -20,7 +20,7 @@ function App() {
 
       {/* Footer */}
       <footer className="text-center py-8 text-xs tracking-widest uppercase text-muted border-t border-border">
-        © 2026 Aashish Bista · Interior Design
+        © 2026 Aashish Bista · Interior Designer
       </footer>
     </div>
   );

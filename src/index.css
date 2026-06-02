@@ -5,6 +5,16 @@
 /* Tailwind base styles */
 @import "tailwindcss";
 
+@theme {
+  --color-cream: #faf9f7;
+  --color-warm: #f4f2ee;
+  --color-muted: #888780;
+  --color-border: #e0ded8;
+
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "DM Sans", sans-serif;
+}
+
 /* Smooth scrolling for the whole page */
 html {
   scroll-behavior: smooth;

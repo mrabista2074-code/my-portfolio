@@ -13,11 +13,8 @@ function Contact() {
       <div className="max-w-lg">
         
         {/* Your email displayed prominently */}
-        <p className="font-serif text-2xl text-gray-900 mb-0">
+        <p className="font-serif text-2xl text-gray-900 mb-10">
           aashishbista2001@gmail.com
-        </p>
-        <p className="font-serif text-xl text-gray-900 mb-10">
-          9842203806
         </p>
 
         {/* Contact form */}
@@ -32,7 +29,7 @@ function Contact() {
             </label>
             <input
               type="text"
-              placeholder="Priya Thapa"
+              placeholder="Your name"
               className="w-full bg-transparent border-b border-border pb-2 text-gray-900 placeholder:text-gray-300 outline-none focus:border-gray-900 transition-colors"
             />
           </div>
@@ -44,7 +41,7 @@ function Contact() {
             </label>
             <input
               type="email"
-              placeholder="priya@email.com"
+              placeholder="Your email address"
               className="w-full bg-transparent border-b border-border pb-2 text-gray-900 placeholder:text-gray-300 outline-none focus:border-gray-900 transition-colors"
             />
           </div>
@@ -56,7 +53,7 @@ function Contact() {
             </label>
             <textarea
               rows={4}
-              placeholder="Tell me about your space..."
+              placeholder="Tell me about your space, design goals, or project ideas..."
               className="w-full bg-transparent border-b border-border pb-2 text-gray-900 placeholder:text-gray-300 outline-none focus:border-gray-900 transition-colors resize-none"
             />
           </div>
