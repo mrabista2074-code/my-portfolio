@@ -1,7 +1,61 @@
 // src/components/PdfSlide.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SlideHeader from "./SlideHeader";
 import { Document, Page, pdfjs } from "react-pdf";
+
+// Use Unpkg CDN for the worker to avoid Vite build issues
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+// Component to lazy load individual PDF pages
+function LazyPdfPage({ index, isCrop, cropStyle, cropScale, pageWidth }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "1500px 0px" } // Pre-load pages just before they enter the screen
+    );
+    
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Approximate height to prevent scrollbar jumping (using roughly A4 aspect ratio 1.414)
+  const approxHeight = pageWidth * 1.414;
+
+  return (
+    <div 
+      ref={containerRef}
+      className={`mb-12 shadow-2xl transition-transform duration-1000 bg-white flex justify-center ${isCrop ? 'overflow-hidden' : ''}`}
+      style={{ minHeight: isVisible ? 'auto' : `${approxHeight}px`, width: '100%' }}
+    >
+      {isVisible ? (
+        <div style={isCrop ? cropStyle : {}}>
+          <Page
+            pageNumber={index + 1}
+            renderTextLayer={false}
+            renderAnnotationLayer={false}
+            width={isCrop ? pageWidth * cropScale : pageWidth}
+            className={isCrop ? "transform origin-center" : ""}
+          />
+        </div>
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+          <span className="font-sans text-xs tracking-widest uppercase text-gray-400">Loading Page {index + 1}...</span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Use Unpkg CDN for the worker to avoid Vite build issues
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -63,20 +117,14 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
                 };
 
                 return (
-                  <div 
+                  <LazyPdfPage 
                     key={`page_${index + 1}`}
-                    className={`mb-12 shadow-2xl transition-transform duration-1000 bg-white ${isCrop ? 'overflow-hidden flex justify-center' : ''}`}
-                  >
-                    <div style={isCrop ? cropStyle : {}}>
-                      <Page
-                        pageNumber={index + 1}
-                        renderTextLayer={false}
-                        renderAnnotationLayer={false}
-                        width={isCrop ? pageWidth * cropScale : pageWidth}
-                        className={isCrop ? "transform origin-center" : ""}
-                      />
-                    </div>
-                  </div>
+                    index={index}
+                    isCrop={isCrop}
+                    cropStyle={cropStyle}
+                    cropScale={cropScale}
+                    pageWidth={pageWidth}
+                  />
                 );
               })}
             </Document>
