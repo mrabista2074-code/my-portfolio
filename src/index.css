@@ -1,63 +1,70 @@
 /* src/index.css */
 /* Import Google Fonts for editorial serifs and crisp sans-serif text */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 /* Tailwind base styles */
 @import "tailwindcss";
 
 :root {
-  --bg-primary: #FAF9F6;      /* Luxurious Alabaster */
-  --bg-secondary: #F3F1EC;    /* Warm Sand */
-  --text-primary: #1C1C1A;    /* Deep Charcoal */
-  --text-secondary: #706F6A;  /* Soft Warm Grey */
-  --border-color: #E2DFD8;    /* Muted Linen Border */
-  --accent-color: #8C7A6B;    /* Warm Antique Bronze */
-  --accent-light: #F4EFEA;    /* Soft Sand Highlight */
+  --bg-primary: #FAF9F6;
+  --bg-secondary: #F3F1EC;
+  --bg-dark: #1C1C1A;
+  --text-primary: #1C1C1A;
+  --text-secondary: #504F4C;
+  --text-light: #FAF9F6;
+  --border-color: #E2DFD8;
+  --accent-color: #8C7A6B;
+  --accent-light: #F4EFEA;
   --card-bg: #FFFFFF;
-  --overlay-bg: rgba(250, 249, 246, 0.95);
-  --cursor-blend: difference;
 }
-
-
-
 
 @theme {
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
+  --color-bg-dark: var(--bg-dark);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
+  --color-text-light: var(--text-light);
   --color-border-color: var(--border-color);
   --color-accent-color: var(--accent-color);
   --color-accent-light: var(--accent-light);
   --color-card-bg: var(--card-bg);
-  --color-overlay-bg: var(--overlay-bg);
 
-  --font-serif: "Cormorant Garamond", serif;
-  --font-sans: "DM Sans", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
 }
 
-/* Smooth scrolling for the whole page */
+/* ============================
+   BASE STYLES
+   ============================ */
+
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Keep navbar offset */
+  overflow: hidden;
+  height: 100%;
 }
 
-/* Default body styles */
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'DM Sans', sans-serif;
-  transition: background-color 0.5s ease, color 0.5s ease;
-  overflow-x: hidden;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
 }
 
-/* Custom Scrollbar for a sleek look */
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Custom Scrollbar — hide globally since slides handle their own scroll */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
@@ -67,17 +74,51 @@ body {
   background: var(--accent-color);
 }
 
-/* Custom text selection colors */
+/* Custom text selection */
 ::selection {
   background-color: var(--accent-light);
   color: var(--accent-color);
 }
 
-/* Custom animations & transition classes */
+/* ============================
+   SLIDE SYSTEM
+   ============================ */
+
+.slide-container {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.slide {
+  min-width: 100vw;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ============================
+   ANIMATIONS
+   ============================ */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -86,105 +127,185 @@ body {
 }
 
 @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
   from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes letterSpacing {
+  from {
+    letter-spacing: 0.5em;
     opacity: 0;
   }
   to {
+    letter-spacing: 0.25em;
     opacity: 1;
   }
 }
 
-@keyframes clipReveal {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
 .animate-fade-in-up {
-  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn 1s ease-out forwards;
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
-.animate-clip-reveal {
-  animation: clipReveal 1.6s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+.animate-scale-in {
+  animation: scaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animation-delay-200 {
-  animation-delay: 200ms;
+.animate-slide-left {
+  animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animation-delay-400 {
-  animation-delay: 400ms;
+.animate-slide-right {
+  animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.animation-delay-600 {
-  animation-delay: 600ms;
+.animate-letter-spacing {
+  animation: letterSpacing 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Elegant custom hover states */
-.underline-hover {
-  position: relative;
-}
-.underline-hover::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: -4px;
-  left: 0;
-  background-color: currentColor;
-  transform-origin: bottom right;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.underline-hover:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+.animation-delay-600 { animation-delay: 600ms; }
+.animation-delay-700 { animation-delay: 700ms; }
+.animation-delay-800 { animation-delay: 800ms; }
+
+/* Start hidden for animation sequences */
+.animate-on-enter {
+  opacity: 0;
 }
 
-/* Custom cursor styling classes */
-.custom-cursor-dot {
+/* ============================
+   TYPOGRAPHY UTILITIES
+   ============================ */
+
+/* Giant vertical text for Contents slide */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* Ultra-wide letter spacing for headings */
+.tracking-ultra {
+  letter-spacing: 0.25em;
+}
+
+/* ============================
+   SLIDE NAVIGATION
+   ============================ */
+
+.slide-nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  background-color: var(--accent-color);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  mix-blend-mode: difference;
 }
 
-.custom-cursor-circle {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--accent-color);
+.slide-nav-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s ease-out, width 0.25s, height 0.25s, border-color 0.25s, background-color 0.25s;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  padding: 0;
 }
 
-/* Hover state for custom cursor */
-.custom-cursor-active .custom-cursor-circle {
-  width: 60px;
-  height: 60px;
-  background-color: rgba(140, 122, 107, 0.1);
-  border-color: transparent;
+.slide-nav-dot.active {
+  background: #ffffff;
+  transform: scale(1.3);
 }
-.custom-cursor-active .custom-cursor-dot {
-  width: 10px;
-  height: 10px;
-}
+
+.slide-nav-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.slide-nav-arrow:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+/* ============================
+   SLIDE HEADER BAR
+   ============================ */
+
+.slide-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  mix-blend-mode: difference;
+  color: #fff;
+  z-index: 50;
+}
+
+/* ============================
+   UTILITY: Hide scrollbar
+   ============================ */
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

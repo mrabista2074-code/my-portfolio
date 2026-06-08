@@ -1,25 +1,27 @@
-// tailwind.config.js
-// This tells Tailwind which files to scan for class names
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",  // scan all files in src/
-  ],
-  theme: {
-    extend: {
-      // Custom fonts we'll add
-      fontFamily: {
-        serif: ['"Cormorant Garamond"', 'serif'],
-        sans: ['"DM Sans"', 'sans-serif'],
-      },
-      // Custom colors for our neutral palette
-      colors: {
-        cream: '#faf9f7',
-        warm: '#f4f2ee',
-        muted: '#888780',
-        border: '#e0ded8',
-      },
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+
+export default [
+  { ignores: ['dist'] },
+  {
+    files: ['**/*.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
   },
-  plugins: [],
-}
+]

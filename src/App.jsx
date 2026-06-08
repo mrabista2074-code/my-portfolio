@@ -1,75 +1,271 @@
 // src/App.jsx
-// Core entry point that aggregates all sections and adds premium custom cursor interaction.
-import { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Projects from "./components/Projects";
-import Process from "./components/Process";
-import About from "./components/About";
-import Testimonials from "./components/Testimonials";
-import Contact from "./components/Contact";
+// Editorial slide-based portfolio — horizontal presentation layout
+import { useState, useEffect, useCallback, useMemo } from "react";
+import projects from "./data/projects";
+import CoverSlide from "./components/CoverSlide";
+import CVSlide from "./components/CVSlide";
+import ContentsSlide from "./components/ContentsSlide";
+import ProjectDetailSlide from "./components/ProjectDetailSlide";
+import PhotoSlide from "./components/PhotoSlide";
+import PdfSlide from "./components/PdfSlide";
+import ContactSlide from "./components/ContactSlide";
+import SlideNavigation from "./components/SlideNavigation";
 import "./App.css";
 
 function App() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [isMobile, setIsMobile] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [visitedSlides, setVisitedSlides] = useState(new Set([0]));
 
-  // Setup custom mouse cursor tracking for desktop screens
   useEffect(() => {
-    const checkDevice = () => {
-      const mobile = window.innerWidth < 1024 || ("ontouchstart" in window);
-      setIsMobile(mobile);
-    };
+    setVisitedSlides(prev => {
+      if (prev.has(currentSlide)) return prev;
+      const next = new Set(prev);
+      next.add(currentSlide);
+      return next;
+    });
+  }, [currentSlide]);
 
-    checkDevice();
-    window.addEventListener("resize", checkDevice);
+  // Build the slide sequence:
+  // Cover → CV → Contents → [Project Detail → Photo(s)]... → Contact
+  const slides = useMemo(() => {
+    const slideList = [
+      { type: "cover", id: "cover" },
+      { type: "cv", id: "cv" },
+      { type: "contents", id: "contents" },
+    ];
 
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
+    projects.forEach((project) => {
+      // Project detail slide
+      slideList.push({ type: "project-detail", id: `project-${project.id}`, project });
 
-    if (window.innerWidth >= 1024 && !("ontouchstart" in window)) {
-      window.addEventListener("mousemove", handleMouseMove);
-    }
+      // Photo slides for each image
+      if (project.images && project.images.length > 0) {
+        project.images.forEach((image, imgIdx) => {
+          slideList.push({
+            type: "photo",
+            id: `photo-${project.id}-${imgIdx}`,
+            image,
+            project,
+          });
+        });
+      }
 
-    return () => {
-      window.removeEventListener("resize", checkDevice);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+      // PDF slides if project has PDFs
+      const pdfsList = project.pdfs || (project.pdf ? [{ url: project.pdf }] : []);
+      pdfsList.forEach((pdfObj, pdfIdx) => {
+        slideList.push({
+          type: "pdf",
+          id: `pdf-${project.id}-${pdfIdx}`,
+          pdfUrl: pdfObj.url,
+          pdfConfig: pdfObj,
+          project,
+        });
+      });
+    });
+
+    // Closing contact slide
+    slideList.push({ type: "contact", id: "contact" });
+
+    return slideList;
   }, []);
 
-  return (
-    <div className="bg-bg-primary min-h-screen text-text-primary transition-colors duration-500 overflow-x-hidden selection:bg-accent-light selection:text-accent-color pt-[72px]">
+  // Determine which slides have dark backgrounds (for nav styling)
+  const darkSlideIndices = useMemo(() => {
+    return slides
+      .map((slide, idx) => (slide.type === "project-detail" || slide.type === "photo") ? idx : null)
+      .filter((idx) => idx !== null);
+  }, [slides]);
+
+  // Calculate the index where each project's detail slide starts
+  const projectSlideIndices = useMemo(() => {
+    return slides
+      .map((slide, idx) => slide.type === "project-detail" ? idx : null)
+      .filter((idx) => idx !== null);
+  }, [slides]);
+
+  const totalSlides = slides.length;
+
+  // Navigate to a specific slide
+  const navigateTo = useCallback((index) => {
+    if (isTransitioning || index === currentSlide) return;
+    const clamped = Math.max(0, Math.min(totalSlides - 1, index));
+    setIsTransitioning(true);
+    setCurrentSlide(clamped);
+    setTimeout(() => setIsTransitioning(false), 850);
+  }, [isTransitioning, currentSlide, totalSlides]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigateTo(currentSlide + 1);
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigateTo(currentSlide - 1);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentSlide, navigateTo]);
+
+  // Mouse wheel navigation
+  useEffect(() => {
+    let wheelTimeout = null;
+    let accumulatedDelta = 0;
+
+    const handleWheel = (e) => {
+      // Allow vertical scrolling inside the PDF container
+      if (e.target.closest('.custom-scrollbar')) {
+        return;
+      }
       
-      {/* Custom Trailing Cursor Elements */}
-      {!isMobile && (
-        <>
-          <div
-            className="custom-cursor-dot"
-            style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}
-          />
-          <div
-            className="custom-cursor-circle"
-            style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }}
-          />
-        </>
-      )}
+      e.preventDefault();
+      accumulatedDelta += e.deltaY;
 
-      {/* Structured Sections */}
-      <Navbar />
-      <Hero />
-      <Projects />
-      <Process />
-      <About />
-      <Testimonials />
-      <Contact />
+      if (wheelTimeout) clearTimeout(wheelTimeout);
 
-      {/* Redesigned Premium Footer */}
-      <footer className="text-center py-12 text-[10px] tracking-[0.3em] uppercase text-text-secondary border-t border-border-color/30 bg-bg-secondary/20 transition-colors duration-300">
-        © {new Date().getFullYear()} Aashish Bista · Interior Designer · Kathmandu, Nepal
-      </footer>
+      wheelTimeout = setTimeout(() => {
+        if (Math.abs(accumulatedDelta) > 30) {
+          if (accumulatedDelta > 0) {
+            navigateTo(currentSlide + 1);
+          } else {
+            navigateTo(currentSlide - 1);
+          }
+        }
+        accumulatedDelta = 0;
+      }, 80);
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      if (wheelTimeout) clearTimeout(wheelTimeout);
+    };
+  }, [currentSlide, navigateTo]);
+
+  // Touch/swipe navigation
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e) => {
+      const deltaX = e.changedTouches[0].clientX - touchStartX;
+      const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+      // Only handle horizontal swipes (or significant vertical on mobile)
+      if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
+        const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
+        if (isHorizontal) {
+          if (deltaX < 0) navigateTo(currentSlide + 1);
+          else navigateTo(currentSlide - 1);
+        } else {
+          if (deltaY < 0) navigateTo(currentSlide + 1);
+          else navigateTo(currentSlide - 1);
+        }
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [currentSlide, navigateTo]);
+
+  // Handle project click from Contents slide
+  const handleProjectClick = (projectIndex) => {
+    if (projectSlideIndices[projectIndex] !== undefined) {
+      navigateTo(projectSlideIndices[projectIndex]);
+    }
+  };
+
+  // Render a single slide
+  const renderSlide = (slide, index) => {
+    const isActive = index === currentSlide;
+    const hasBeenActive = visitedSlides.has(index);
+
+    switch (slide.type) {
+      case "cover":
+        return <CoverSlide key={slide.id} isActive={isActive} hasBeenActive={hasBeenActive} />;
+      case "cv":
+        return <CVSlide key={slide.id} isActive={isActive} hasBeenActive={hasBeenActive} />;
+      case "contents":
+        return (
+          <ContentsSlide
+            key={slide.id}
+            projects={projects}
+            isActive={isActive}
+            hasBeenActive={hasBeenActive}
+            onProjectClick={handleProjectClick}
+          />
+        );
+      case "project-detail":
+        return (
+          <ProjectDetailSlide
+            key={slide.id}
+            project={slide.project}
+            isActive={isActive}
+            hasBeenActive={hasBeenActive}
+          />
+        );
+      case "photo":
+        return (
+          <PhotoSlide
+            key={slide.id}
+            image={slide.image}
+            isActive={isActive}
+            hasBeenActive={hasBeenActive}
+          />
+        );
+      case "pdf":
+        return (
+          <PdfSlide
+            key={slide.id}
+            pdfUrl={slide.pdfUrl}
+            pdfConfig={slide.pdfConfig}
+            projectTitle={slide.project?.title}
+            isActive={isActive}
+            hasBeenActive={hasBeenActive}
+          />
+        );
+      case "contact":
+        return <ContactSlide key={slide.id} isActive={isActive} hasBeenActive={hasBeenActive} />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="h-screen overflow-hidden bg-bg-primary">
+      {/* Slide Track */}
+      <div
+        className="slide-container"
+        style={{
+          width: `${totalSlides * 100}vw`,
+          transform: `translateX(-${currentSlide * 100}vw)`,
+        }}
+      >
+        {slides.map((slide, index) => renderSlide(slide, index))}
+      </div>
+
+      {/* Navigation */}
+      <SlideNavigation
+        total={totalSlides}
+        current={currentSlide}
+        onNavigate={navigateTo}
+        darkSlides={darkSlideIndices}
+      />
     </div>
   );
 }
 
-export default App;
+export default App;

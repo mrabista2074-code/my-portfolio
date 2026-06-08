@@ -1,21 +1,2 @@
 /* src/App.css */
-/* Clean slate for app-specific helper utilities */
-
-/* Snap scroll utilities for horizontal sliders */
-.snap-inline-x {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.snap-item {
-  scroll-snap-align: start;
-}
-
-/* Hide scrollbars but keep functionality */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
-}
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
+/* Minimal app-level utilities for the slide portfolio */
