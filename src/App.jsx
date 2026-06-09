@@ -131,6 +131,7 @@ function App() {
     let wheelTimeout = null;
     let accumulatedDeltaX = 0;
     let accumulatedDeltaY = 0;
+    let lastWheelNavTime = 0;
 
     const handleWheel = (e) => {
       const isScrollable = e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar');
@@ -147,6 +148,14 @@ function App() {
       
       // Prevent browser back/forward gestures on horizontal swipes
       e.preventDefault();
+
+      // If we just navigated via wheel, wait for transition to finish before changing slide again
+      if (Date.now() - lastWheelNavTime < 850) {
+        // Reset accumulators so old swipes don't trigger after the lock expires
+        accumulatedDeltaX = 0;
+        accumulatedDeltaY = 0;
+        return;
+      }
 
       accumulatedDeltaX += e.deltaX;
       accumulatedDeltaY += e.deltaY;
@@ -165,6 +174,7 @@ function App() {
         }
         accumulatedDeltaX = 0;
         accumulatedDeltaY = 0;
+        lastWheelNavTime = Date.now();
       }
 
       if (wheelTimeout) clearTimeout(wheelTimeout);
