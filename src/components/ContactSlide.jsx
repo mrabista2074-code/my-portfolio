@@ -34,9 +34,9 @@ function ContactSlide({ isActive, hasBeenActive }) {
 
             {/* Location */}
             <div>
-              <span className="text-[10px] tracking-[0.25em] uppercase text-text-secondary block mb-1">Based In</span>
+              <span className="text-[10px] tracking-[0.25em] uppercase text-text-secondary block mb-1">Location</span>
               <span className="font-serif text-lg text-text-primary">
-                Jhamsikhel, Lalitpur — Nepal
+                Kalopul, Kathmandu — Nepal
               </span>
             </div>
 

@@ -17,7 +17,7 @@ function CoverSlide({ isActive, hasBeenActive }) {
           {/* Main Title */}
           <h1
             className={`font-serif font-normal text-6xl sm:text-7xl md:text-8xl lg:text-[120px] text-text-primary tracking-[0.08em] leading-none mb-6
-              ${hasBeenActive ? "animate-fade-in-up" : "opacity-0"}`}
+              ${hasBeenActive ? "animate-pop-up" : "opacity-0"}`}
           >
             PORTFOLIO
           </h1>
@@ -25,7 +25,7 @@ function CoverSlide({ isActive, hasBeenActive }) {
           {/* Subtitle */}
           <p
             className={`text-sm sm:text-base tracking-[0.35em] uppercase text-text-secondary font-light
-              ${hasBeenActive ? "animate-fade-in-up animation-delay-300" : "opacity-0"}`}
+              ${hasBeenActive ? "animate-pop-up animation-delay-300" : "opacity-0"}`}
           >
             INTERIOR &nbsp; DESIGNER
           </p>
