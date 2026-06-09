@@ -87,31 +87,44 @@ function App() {
 
   const totalSlides = slides.length;
 
-  // Navigate to a specific slide
-  const navigateTo = useCallback((index) => {
-    if (isTransitioning || index === currentSlide) return;
-    const clamped = Math.max(0, Math.min(totalSlides - 1, index));
-    setIsTransitioning(true);
-    setCurrentSlide(clamped);
-    setTimeout(() => setIsTransitioning(false), 850);
-  }, [isTransitioning, currentSlide, totalSlides]);
+  // Navigate to a specific slide or direction
+  const navigateTo = useCallback((action, force = true) => {
+    setCurrentSlide((prev) => {
+      let target = action;
+      if (action === "next") target = prev + 1;
+      if (action === "prev") target = prev - 1;
+
+      const clamped = Math.max(0, Math.min(totalSlides - 1, target));
+      if (clamped === prev) return prev;
+
+      // Only respect the transition lock if not forced (e.g. for mouse wheel)
+      if (!force && isTransitioning) return prev;
+
+      // Set the transition lock
+      setIsTransitioning(true);
+      if (window.transitionTimeout) clearTimeout(window.transitionTimeout);
+      window.transitionTimeout = setTimeout(() => setIsTransitioning(false), 850);
+
+      return clamped;
+    });
+  }, [isTransitioning, totalSlides]);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "ArrowRight") {
         e.preventDefault();
-        navigateTo(currentSlide + 1);
+        navigateTo("next", true); // force navigation to ignore transition lock
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
-        navigateTo(currentSlide - 1);
+        navigateTo("prev", true); // force navigation to ignore transition lock
       }
       // Let the browser handle Up/Down/PageUp/PageDown natively for smooth hardware-accelerated scrolling
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentSlide, navigateTo]);
+  }, [navigateTo]);
 
   // Mouse wheel navigation
   useEffect(() => {
@@ -132,13 +145,13 @@ function App() {
       wheelTimeout = setTimeout(() => {
         if (Math.abs(accumulatedDelta) > 30) {
           if (accumulatedDelta > 0) {
-            navigateTo(currentSlide + 1);
+            navigateTo("next", false);
           } else {
-            navigateTo(currentSlide - 1);
+            navigateTo("prev", false);
           }
         }
         accumulatedDelta = 0;
-      }, 80);
+      }, 50); // shortened from 80 for faster response
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
@@ -146,7 +159,7 @@ function App() {
       window.removeEventListener("wheel", handleWheel);
       if (wheelTimeout) clearTimeout(wheelTimeout);
     };
-  }, [currentSlide, navigateTo]);
+  }, [navigateTo]);
 
   // Touch/swipe navigation — only horizontal swipes change slides
   // Vertical swipes inside scrollable content (PDF, CV) are left alone
@@ -171,8 +184,8 @@ function App() {
       const isHorizontalSwipe = absX > 50 && absX > absY * 1.5 && elapsed < 500;
 
       if (isHorizontalSwipe) {
-        if (deltaX < 0) navigateTo(currentSlide + 1);  // swipe left → next
-        else navigateTo(currentSlide - 1);               // swipe right → prev
+        if (deltaX < 0) navigateTo("next", true);  // swipe left → next
+        else navigateTo("prev", true);               // swipe right → prev
       }
     };
 
