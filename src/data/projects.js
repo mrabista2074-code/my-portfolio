@@ -80,7 +80,6 @@ const projects = [
     ],
     description: "A specialty café celebrating Nepali craftsmanship, featuring custom pottery, woven jute lights, and natural clay finishes.",
     fullDescription: "Maadhyam Café is an homage to local craftsmanship. I collaborated with artisans from Bhaktapur for custom handmade red-clay tiles and potters for unique tablewares.",
-    coverImage: "/images/cafe-1.png",
     images: [],
     pdfs: [
       {

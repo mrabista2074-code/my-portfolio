@@ -73,16 +73,18 @@ function ProjectDetailSlide({ project, isActive, hasBeenActive }) {
           </div>
 
           {/* RIGHT: Large Image — hidden on very small screens, shown as a smaller section on md+ */}
-          <div className={`relative overflow-hidden min-h-[200px] sm:min-h-[300px] lg:min-h-0 ${hasBeenActive ? "animate-scale-in animation-delay-200" : "opacity-0"}`}>
-            <img
-              src={project.coverImage}
-              alt={`${project.title} cover`}
-              className="w-full h-full object-contain"
-              loading="lazy"
-            />
-            {/* Subtle gradient overlay on left edge for blending */}
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg-dark/40 to-transparent pointer-events-none hidden lg:block" />
-          </div>
+          {project.coverImage && (
+            <div className={`relative overflow-hidden min-h-[200px] sm:min-h-[300px] lg:min-h-0 ${hasBeenActive ? "animate-scale-in animation-delay-200" : "opacity-0"}`}>
+              <img
+                src={project.coverImage}
+                alt={`${project.title} cover`}
+                className="w-full h-full object-contain"
+                loading="lazy"
+              />
+              {/* Subtle gradient overlay on left edge for blending */}
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg-dark/40 to-transparent pointer-events-none hidden lg:block" />
+            </div>
+          )}
 
         </div>
       </div>
