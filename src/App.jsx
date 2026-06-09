@@ -166,14 +166,10 @@ function App() {
       const absX = Math.abs(deltaX);
       const absY = Math.abs(deltaY);
 
-      // Check if the swipe originated inside a scrollable container
-      const insideScrollable = e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar');
-
       // Only change slides on clearly HORIZONTAL swipes (ratio > 1.5)
-      // And NOT inside scrollable containers
       const isHorizontalSwipe = absX > 50 && absX > absY * 1.5 && elapsed < 500;
 
-      if (isHorizontalSwipe && !insideScrollable) {
+      if (isHorizontalSwipe) {
         if (deltaX < 0) navigateTo(currentSlide + 1);  // swipe left → next
         else navigateTo(currentSlide - 1);               // swipe right → prev
       }
