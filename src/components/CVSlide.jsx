@@ -9,8 +9,13 @@ function CVSlide({ isActive, hasBeenActive }) {
 
   // Auto-focus the scroll container when slide becomes active so keyboard scrolling works natively
   useEffect(() => {
-    if (isActive && scrollContainerRef.current) {
-      scrollContainerRef.current.focus({ preventScroll: true });
+    if (isActive) {
+      const timer = setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.focus({ preventScroll: true });
+        }
+      }, 50);
+      return () => clearTimeout(timer);
     }
   }, [isActive]);
 
