@@ -60,6 +60,9 @@ function ContentsSlide({ projects, isActive, hasBeenActive, onProjectClick }) {
 
           {/* Mobile: Horizontal CONTENTS label */}
           <div className="lg:hidden mt-12 text-center">
+            <span className="text-sm tracking-[0.4em] uppercase text-text-secondary font-light block mb-2">
+              TABLE OF
+            </span>
             <span className="font-serif text-5xl text-text-primary tracking-[0.15em] select-none">
               CONTENTS
             </span>
