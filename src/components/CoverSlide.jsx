@@ -27,7 +27,7 @@ function CoverSlide({ isActive, hasBeenActive }) {
             className={`text-sm sm:text-base tracking-[0.35em] uppercase text-text-secondary font-light
               ${isActive ? "animate-pop-up animation-delay-300" : ""}`}
           >
-            INTERIOR &nbsp; DESIGNER
+            AASHISH BISTA <span className="mx-2 lg:mx-4 font-thin opacity-50">|</span> INTERIOR DESIGNER
           </p>
         </div>
       </div>
