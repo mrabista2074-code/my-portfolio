@@ -126,31 +126,47 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [navigateTo]);
 
-  // Mouse wheel navigation
+  // Mouse wheel and Trackpad navigation
   useEffect(() => {
     let wheelTimeout = null;
-    let accumulatedDelta = 0;
+    let accumulatedDeltaX = 0;
+    let accumulatedDeltaY = 0;
 
     const handleWheel = (e) => {
-      // Allow vertical scrolling inside scrollable containers (PDF, CV, etc.)
-      if (e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar')) {
+      const isScrollable = e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar');
+      
+      const absX = Math.abs(e.deltaX);
+      const absY = Math.abs(e.deltaY);
+      
+      const isVertical = absY > absX;
+
+      // Allow native vertical scrolling inside scrollable containers (PDF, CV, etc.)
+      if (isScrollable && isVertical) {
         return;
       }
       
+      // Prevent browser back/forward gestures on horizontal swipes
       e.preventDefault();
-      accumulatedDelta += e.deltaY;
+
+      accumulatedDeltaX += e.deltaX;
+      accumulatedDeltaY += e.deltaY;
 
       if (wheelTimeout) clearTimeout(wheelTimeout);
 
       wheelTimeout = setTimeout(() => {
-        if (Math.abs(accumulatedDelta) > 30) {
-          if (accumulatedDelta > 0) {
-            navigateTo("next", false);
-          } else {
-            navigateTo("prev", false);
-          }
+        const totalAbsX = Math.abs(accumulatedDeltaX);
+        const totalAbsY = Math.abs(accumulatedDeltaY);
+
+        if (totalAbsX > totalAbsY && totalAbsX > 30) {
+          if (accumulatedDeltaX > 0) navigateTo("next", false);
+          else navigateTo("prev", false);
+        } else if (totalAbsY >= totalAbsX && totalAbsY > 30) {
+          if (accumulatedDeltaY > 0) navigateTo("next", false);
+          else navigateTo("prev", false);
         }
-        accumulatedDelta = 0;
+        
+        accumulatedDeltaX = 0;
+        accumulatedDeltaY = 0;
       }, 50); // shortened from 80 for faster response
     };
 
