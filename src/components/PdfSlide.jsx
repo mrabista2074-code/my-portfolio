@@ -3,8 +3,11 @@ import { useState, useEffect, useRef } from "react";
 import SlideHeader from "./SlideHeader";
 import { Document, Page, pdfjs } from "react-pdf";
 
-// Use Unpkg CDN for the worker to avoid Vite build issues
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Load worker locally via Vite to avoid slow CDN downloads
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 // Component to lazy load individual PDF pages
 function LazyPdfPage({ index, isCrop, cropStyle, cropScale, pageWidth }) {
