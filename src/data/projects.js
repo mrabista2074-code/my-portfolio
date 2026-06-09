@@ -40,7 +40,7 @@ const projects = [
     subtitle: "Client Project",
     category: "Residential",
     year: "2024",
-    location: "Jhamsikhel, Lalitpur",
+    location: "Tangal, Kathmandu",
     area: "1,150 sq. ft.",
     client: "Suraksha Pandey",
     materials: ["Handwoven Rattan", "Desert Sand Plaster", "Aged Brass", "Travertine Stone"],
