@@ -70,15 +70,15 @@ const projects = [
     year: "2025",
     location: "Lazimpat, Kathmandu",
     software: "Sketchup 25.0.634, Enscape 4.7.0.57",
-    client: "Maadhyam Collective",
-    materials: ["Handmade Ceramic Tiles", "Reclaimed Sal Wood", "Woven Jute", "Earthy Clay Plaster"],
-    objective: "To create a specialty café celebrating Nepali craftsmanship, where coffee, craft, and conversations sit in slow harmony.",
-    style: "Rustic contemporary with deep roots in local artisanal heritage — handmade clay tiles, reclaimed wood, and woven jute fixtures.",
+    client: "Midea",
+    materials: ["White Acrylic Solid Surface", "Brushed Aluminum", "LED Backlighting", "Glass"],
+    objective: "To design a modern and interactive showroom experience that highlights Midea's innovative appliance solutions, creating a professional and welcoming environment for clients.",
+    style: "Futuristic corporate minimalism characterized by sleek white and blue branding elements, dynamic architectural curves, and bright, clean display zones.",
     designAreas: [
       ["Showroom Area", "Office Area"],
     ],
-    description: "A specialty café celebrating Nepali craftsmanship, featuring custom pottery, woven jute lights, and natural clay finishes.",
-    fullDescription: "Maadhyam Café is an homage to local craftsmanship. I collaborated with artisans from Bhaktapur for custom handmade red-clay tiles and potters for unique tablewares.",
+    description: "A sleek, modern corporate showroom designed to showcase Midea's innovative appliance solutions.",
+    fullDescription: "This project involved designing an engaging and highly functional showroom for Midea. The design utilizes dynamic, curved architectural elements and the brand's signature blue and white color palette to create a futuristic, professional environment.",
     images: [],
     pdfs: [
       {
