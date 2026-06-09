@@ -293,6 +293,19 @@ function App() {
 
   return (
     <div className="h-screen h-dvh overflow-hidden bg-bg-primary">
+      {/* Global Top Navbar */}
+      <nav className="absolute top-6 sm:top-8 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 sm:gap-8 px-6 sm:px-8 py-2.5 rounded-full border border-black/10 bg-white/70 backdrop-blur-md shadow-sm transition-all duration-300">
+        <button onClick={() => navigateTo(0, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
+          Home
+        </button>
+        <button onClick={() => navigateTo(2, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
+          Contents
+        </button>
+        <button onClick={() => navigateTo(totalSlides - 1, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
+          Contact
+        </button>
+      </nav>
+
       {/* Slide Track */}
       <div
         className="slide-container"

@@ -7,8 +7,7 @@ function CoverSlide({ isActive, hasBeenActive }) {
   return (
     <div className="slide bg-bg-primary">
       <SlideHeader
-        left="Aashish Bista"
-        center="Selected Works"
+        left="Aashish Bista &nbsp;·&nbsp; Selected Works"
         right="2026"
       />
 
