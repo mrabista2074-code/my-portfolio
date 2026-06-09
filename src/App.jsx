@@ -115,9 +115,11 @@ function App() {
             // Spacebar behaves like PageDown, Shift+Space behaves like PageUp
             const isUp = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
             const isPage = e.key.includes('Page') || e.key === ' ';
-            const amount = isPage ? window.innerHeight * 0.8 : 120;
+            const amount = isPage ? window.innerHeight * 0.8 : (e.repeat ? 60 : 120);
             const dir = isUp ? -1 : 1;
-            scrollable.scrollBy({ top: amount * dir, behavior: 'smooth' });
+            // Use 'auto' if holding the key down so it doesn't jitter by constantly resetting the smooth animation
+            const behavior = e.repeat ? 'auto' : 'smooth';
+            scrollable.scrollBy({ top: amount * dir, behavior });
           }
         }
       }
