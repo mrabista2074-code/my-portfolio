@@ -99,12 +99,27 @@ function App() {
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      if (e.key === "ArrowRight") {
         e.preventDefault();
         navigateTo(currentSlide + 1);
-      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         navigateTo(currentSlide - 1);
+      } else if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(e.key)) {
+        // Find the scrollable container in the current slide
+        const slides = document.querySelectorAll('.slide');
+        if (slides[currentSlide]) {
+          const scrollable = slides[currentSlide].querySelector('.custom-scrollbar, .hide-scrollbar');
+          if (scrollable) {
+            e.preventDefault();
+            // Spacebar behaves like PageDown, Shift+Space behaves like PageUp
+            const isUp = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
+            const isPage = e.key.includes('Page') || e.key === ' ';
+            const amount = isPage ? window.innerHeight * 0.8 : 60;
+            const dir = isUp ? -1 : 1;
+            scrollable.scrollBy({ top: amount * dir, behavior: 'smooth' });
+          }
+        }
       }
     };
 
