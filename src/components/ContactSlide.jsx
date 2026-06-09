@@ -14,15 +14,10 @@ function ContactSlide({ isActive, hasBeenActive }) {
 
       <div className="slide-content items-center justify-center">
         <div className={`text-center max-w-lg px-6 ${hasBeenActive ? "animate-fade-in-up" : "opacity-0"}`}>
-          {/* Heading */}
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light text-text-primary leading-tight mb-4">
-            Let's Work<br />
-            <span className="italic">Together</span>
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light text-text-primary leading-tight mb-10">
+            Thank<br />
+            <span className="italic">You</span>
           </h2>
-
-          <p className="text-sm text-text-secondary font-light leading-relaxed mb-10 max-w-sm mx-auto">
-            Whether you're looking to design a residential home, wellness space, or hospitality concept, I'm always open to new collaborations.
-          </p>
 
           {/* Contact Details */}
           <div className={`space-y-6 ${hasBeenActive ? "animate-fade-in-up animation-delay-300" : "opacity-0"}`}>

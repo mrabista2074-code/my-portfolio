@@ -7,7 +7,7 @@ function PhotoSlide({ image, isActive }) {
   return (
     <div className="slide bg-bg-primary">
       {/* Background/Images container */}
-      <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-12 lg:p-20">
+      <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-8 lg:p-20">
         <img
           src={image.src}
           alt={image.label}

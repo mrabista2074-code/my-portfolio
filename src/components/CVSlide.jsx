@@ -13,12 +13,12 @@ function CVSlide({ isActive, hasBeenActive }) {
       />
 
       <div className="slide-content">
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 px-6 sm:px-10 lg:px-16 py-6 overflow-y-auto hide-scrollbar">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 sm:px-10 lg:px-16 py-4 sm:py-6 overflow-y-auto hide-scrollbar">
 
           {/* LEFT COLUMN: Photo + Bio */}
-          <div className={`flex flex-col gap-6 ${hasBeenActive ? "animate-slide-left" : "opacity-0"}`}>
+          <div className={`flex flex-col gap-4 sm:gap-6 ${hasBeenActive ? "animate-slide-left" : "opacity-0"}`}>
             {/* Profile Photo */}
-            <div className="w-40 sm:w-48 aspect-[3/4] overflow-hidden bg-bg-secondary border border-border-color/30">
+            <div className="w-28 sm:w-40 lg:w-48 aspect-[3/4] overflow-hidden bg-bg-secondary border border-border-color/30">
               <img
                 src="/images/profile2.jpg"
                 alt="Aashish Bista portrait"
@@ -28,14 +28,14 @@ function CVSlide({ isActive, hasBeenActive }) {
             </div>
 
             {/* Name */}
-            <h2 className="font-serif text-2xl sm:text-3xl font-medium text-text-primary leading-tight">
+            <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl font-medium text-text-primary leading-tight">
               Aashish Bista
             </h2>
 
             {/* Objective */}
             <div>
-              <h3 className="font-serif text-lg font-semibold text-text-primary mb-2">Objective</h3>
-              <div className="space-y-4 text-sm text-text-secondary font-light leading-relaxed max-w-md">
+              <h3 className="font-serif text-base sm:text-lg font-semibold text-text-primary mb-2">Objective</h3>
+              <div className="space-y-4 text-xs sm:text-sm text-text-secondary font-light leading-relaxed max-w-md">
                 <p>
                   A creative and detail-oriented interior designer with a Bachelor's degree in Interior Design, dedicated to translating conceptual knowledge into practical, elegant solutions. Skilled in AutoCAD, SketchUp, V-Ray, Enscape, and Blender, with a passion for creating functional and aesthetically pleasing spaces that tell a unique story. Committed to continuous innovation and delivering high-quality, deeply personal design environments.
                 </p>
@@ -44,22 +44,21 @@ function CVSlide({ isActive, hasBeenActive }) {
           </div>
 
           {/* RIGHT COLUMN: Contact, Experience, Skills, Education */}
-          <div className={`flex flex-col gap-7 ${hasBeenActive ? "animate-slide-right animation-delay-200" : "opacity-0"}`}>
+          <div className={`flex flex-col gap-5 sm:gap-7 ${hasBeenActive ? "animate-slide-right animation-delay-200" : "opacity-0"}`}>
 
             {/* Contact */}
             <div>
-              <h3 className="font-serif text-lg font-semibold text-text-primary mb-2">Contact</h3>
-              <div className="space-y-0.5 text-sm text-text-secondary font-light">
+              <h3 className="font-serif text-base sm:text-lg font-semibold text-text-primary mb-2">Contact</h3>
+              <div className="space-y-0.5 text-xs sm:text-sm text-text-secondary font-light">
                 <p>Kalopul, Kathmandu, Nepal</p>
                 <p>aashishbista2001@gmail.com</p>
-                <p>+977-9842203806</p>
               </div>
             </div>
 
             {/* Experience */}
             <div>
-              <h3 className="font-serif text-lg font-semibold text-text-primary mb-2">Experience</h3>
-              <div className="space-y-4 text-sm text-text-secondary font-light">
+              <h3 className="font-serif text-base sm:text-lg font-semibold text-text-primary mb-2">Experience</h3>
+              <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-text-secondary font-light">
                 <div>
                   <p className="font-medium text-text-primary">Junior Designer</p>
                   <p>NEST FURNITURE | Industrial Estate, Lalitpur</p>
@@ -80,8 +79,8 @@ function CVSlide({ isActive, hasBeenActive }) {
 
             {/* Skills */}
             <div>
-              <h3 className="font-serif text-lg font-semibold text-text-primary mb-2">Technical Skills</h3>
-              <ul className="space-y-1 text-sm text-text-secondary font-light list-disc list-inside">
+              <h3 className="font-serif text-base sm:text-lg font-semibold text-text-primary mb-2">Technical Skills</h3>
+              <ul className="space-y-1 text-xs sm:text-sm text-text-secondary font-light list-disc list-inside">
                 <li>AutoCAD, Sketchup, V-ray, Enscape, Blender</li>
                 <li>Microsoft Office Suite (Word, Excel, PowerPoint)</li>
                 <li>Space Planning and Layout Design</li>
@@ -91,8 +90,8 @@ function CVSlide({ isActive, hasBeenActive }) {
 
             {/* Education */}
             <div>
-              <h3 className="font-serif text-lg font-semibold text-text-primary mb-2">Education</h3>
-              <div className="text-sm text-text-secondary font-light space-y-1">
+              <h3 className="font-serif text-base sm:text-lg font-semibold text-text-primary mb-2">Education</h3>
+              <div className="text-xs sm:text-sm text-text-secondary font-light space-y-1">
                 <p className="font-medium text-text-primary">Bachelor in Interior Design</p>
                 <p>Kantipur International College, Buddhanagar</p>
                 <p>Purbanchal University</p>

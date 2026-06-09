@@ -51,6 +51,9 @@ body {
   overflow: hidden;
   height: 100%;
   margin: 0;
+  /* Prevent pull-to-refresh and overscroll on mobile */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
@@ -72,6 +75,13 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
+}
+
+/* Hide scrollbar on mobile for cleaner look */
+@media (max-width: 640px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Custom text selection */
@@ -245,6 +255,14 @@ body {
   mix-blend-mode: difference;
 }
 
+/* On mobile, move nav slightly higher to avoid home bar */
+@media (max-width: 640px) {
+  .slide-nav {
+    bottom: 16px;
+    gap: 6px;
+  }
+}
+
 .slide-nav-dot {
   width: 8px;
   height: 8px;
@@ -254,6 +272,14 @@ body {
   cursor: pointer;
   transition: all 0.4s ease;
   padding: 0;
+}
+
+/* Smaller dots on mobile since there are many slides */
+@media (max-width: 640px) {
+  .slide-nav-dot {
+    width: 6px;
+    height: 6px;
+  }
 }
 
 .slide-nav-dot.active {
@@ -273,6 +299,14 @@ body {
   justify-content: center;
   transition: all 0.3s ease;
   color: rgba(255, 255, 255, 0.6);
+}
+
+/* Larger touch targets on mobile */
+@media (max-width: 640px) {
+  .slide-nav-arrow {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 .slide-nav-arrow:hover {
@@ -298,6 +332,13 @@ body {
   z-index: 50;
 }
 
+@media (max-width: 640px) {
+  .slide-header {
+    padding: 12px 16px;
+    font-size: 10px;
+  }
+}
+
 /* ============================
    UTILITY: Hide scrollbar
    ============================ */
@@ -308,4 +349,27 @@ body {
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ============================
+   MOBILE TOUCH UTILITIES
+   ============================ */
+
+/* Prevent text selection during swipe on mobile */
+.slide {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Re-enable text selection for actual content */
+.slide-content p,
+.slide-content span,
+.slide-content a,
+.slide-content h1,
+.slide-content h2,
+.slide-content h3,
+.slide-content h4,
+.slide-content li {
+  -webkit-user-select: text;
+  user-select: text;
 }

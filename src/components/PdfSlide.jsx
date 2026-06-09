@@ -35,8 +35,8 @@ function LazyPdfPage({ index, isCrop, cropStyle, cropScale, pageWidth }) {
   return (
     <div 
       ref={containerRef}
-      className={`mb-12 shadow-2xl transition-transform duration-1000 bg-white flex justify-center ${isCrop ? 'overflow-hidden' : ''}`}
-      style={{ minHeight: isVisible ? 'auto' : `${approxHeight}px`, width: '100%' }}
+      className={`mb-6 sm:mb-12 shadow-2xl transition-transform duration-1000 bg-white flex justify-center ${isCrop ? 'overflow-hidden' : ''}`}
+      style={{ minHeight: isVisible ? 'auto' : `${approxHeight}px`, width: '100%', maxWidth: '100%' }}
     >
       {isVisible ? (
         <div style={isCrop ? cropStyle : {}}>
@@ -57,9 +57,6 @@ function LazyPdfPage({ index, isCrop, cropStyle, cropScale, pageWidth }) {
   );
 }
 
-// Use Unpkg CDN for the worker to avoid Vite build issues
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-
 function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActive }) {
   const [numPages, setNumPages] = useState(null);
   const [pageWidth, setPageWidth] = useState(1000);
@@ -68,7 +65,7 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
   useEffect(() => {
     // Calculate page width based on window size
     const calculateWidth = () => {
-      const maxWidth = window.innerWidth * 0.90; // Fit tightly like full-bleed slides
+      const maxWidth = window.innerWidth * 0.95; // Use more width on mobile
       setPageWidth(Math.min(maxWidth, 1400));
     };
 
@@ -95,8 +92,9 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
       <div className="absolute inset-0 flex flex-col items-center">
         {hasBeenActive && (
           <div 
-            className="w-full h-full overflow-y-auto overflow-x-hidden custom-scrollbar p-4 sm:p-12 lg:p-20 pt-28 pb-32"
+            className="w-full h-full overflow-y-auto overflow-x-hidden custom-scrollbar p-2 sm:p-12 lg:p-20 pt-16 sm:pt-28 pb-20 sm:pb-32"
             onScroll={handleScroll}
+            style={{ touchAction: 'pan-y' }}
           >
             <Document
               file={pdfUrl}
@@ -137,13 +135,13 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
       {/* Scroll Indicator Gesture */}
       {isActive && !hasScrolled && numPages && (
         <div 
-          className="absolute top-24 left-1/2 transform -translate-x-1/2 flex flex-col items-center pointer-events-none transition-opacity duration-1000 z-50"
+          className="absolute top-14 sm:top-24 left-1/2 transform -translate-x-1/2 flex flex-col items-center pointer-events-none transition-opacity duration-1000 z-50"
           style={{ mixBlendMode: 'difference', color: '#fff' }}
         >
-          <span className="font-sans text-xs tracking-[0.2em] uppercase mb-3">
+          <span className="font-sans text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-3">
             Scroll to read
           </span>
-          <div className="w-[1px] h-12 bg-white/30 overflow-hidden relative">
+          <div className="w-[1px] h-8 sm:h-12 bg-white/30 overflow-hidden relative">
             <div className="w-full h-full bg-white absolute top-0 left-0 animate-[scrolldown_1.5s_ease-in-out_infinite]" />
           </div>
         </div>

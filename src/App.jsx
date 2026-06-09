@@ -1,6 +1,6 @@
 // src/App.jsx
 // Editorial slide-based portfolio — horizontal presentation layout
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import projects from "./data/projects";
 import CoverSlide from "./components/CoverSlide";
 import CVSlide from "./components/CVSlide";
@@ -16,6 +16,7 @@ function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [visitedSlides, setVisitedSlides] = useState(new Set([0]));
+  const touchRef = useRef({ startX: 0, startY: 0, startTime: 0 });
 
   useEffect(() => {
     setVisitedSlides(prev => {
@@ -117,8 +118,8 @@ function App() {
     let accumulatedDelta = 0;
 
     const handleWheel = (e) => {
-      // Allow vertical scrolling inside the PDF container
-      if (e.target.closest('.custom-scrollbar')) {
+      // Allow vertical scrolling inside scrollable containers (PDF, CV, etc.)
+      if (e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar')) {
         return;
       }
       
@@ -146,30 +147,35 @@ function App() {
     };
   }, [currentSlide, navigateTo]);
 
-  // Touch/swipe navigation
+  // Touch/swipe navigation — only horizontal swipes change slides
+  // Vertical swipes inside scrollable content (PDF, CV) are left alone
   useEffect(() => {
-    let touchStartX = 0;
-    let touchStartY = 0;
-
     const handleTouchStart = (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
+      touchRef.current = {
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        startTime: Date.now(),
+      };
     };
 
     const handleTouchEnd = (e) => {
-      const deltaX = e.changedTouches[0].clientX - touchStartX;
-      const deltaY = e.changedTouches[0].clientY - touchStartY;
+      const deltaX = e.changedTouches[0].clientX - touchRef.current.startX;
+      const deltaY = e.changedTouches[0].clientY - touchRef.current.startY;
+      const elapsed = Date.now() - touchRef.current.startTime;
 
-      // Only handle horizontal swipes (or significant vertical on mobile)
-      if (Math.abs(deltaX) > 50 || Math.abs(deltaY) > 50) {
-        const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
-        if (isHorizontal) {
-          if (deltaX < 0) navigateTo(currentSlide + 1);
-          else navigateTo(currentSlide - 1);
-        } else {
-          if (deltaY < 0) navigateTo(currentSlide + 1);
-          else navigateTo(currentSlide - 1);
-        }
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      // Check if the swipe originated inside a scrollable container
+      const insideScrollable = e.target.closest('.custom-scrollbar') || e.target.closest('.hide-scrollbar');
+
+      // Only change slides on clearly HORIZONTAL swipes (ratio > 1.5)
+      // And NOT inside scrollable containers
+      const isHorizontalSwipe = absX > 50 && absX > absY * 1.5 && elapsed < 500;
+
+      if (isHorizontalSwipe && !insideScrollable) {
+        if (deltaX < 0) navigateTo(currentSlide + 1);  // swipe left → next
+        else navigateTo(currentSlide - 1);               // swipe right → prev
       }
     };
 
@@ -245,7 +251,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen overflow-hidden bg-bg-primary">
+    <div className="h-screen h-dvh overflow-hidden bg-bg-primary">
       {/* Slide Track */}
       <div
         className="slide-container"
