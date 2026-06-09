@@ -20,6 +20,11 @@ function App() {
   const touchRef = useRef({ startX: 0, startY: 0, startTime: 0 });
 
   useEffect(() => {
+    // Clear any lingering URL hashes from the previous website version
+    if (window.location.hash) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+
     setVisitedSlides(prev => {
       if (prev.has(currentSlide)) return prev;
       const next = new Set(prev);
