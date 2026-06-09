@@ -79,6 +79,7 @@ const projects = [
     ],
     description: "A sleek, modern corporate showroom designed to showcase Midea's innovative appliance solutions.",
     fullDescription: "This project involved designing an engaging and highly functional showroom for Midea. The design utilizes dynamic, curved architectural elements and the brand's signature blue and white color palette to create a futuristic, professional environment.",
+    coverImage: "/images/midea.jpg",
     images: [],
     pdfs: [
       {
