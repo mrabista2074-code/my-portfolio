@@ -293,18 +293,31 @@ function App() {
 
   return (
     <div className="h-screen h-dvh overflow-hidden bg-bg-primary">
-      {/* Global Top Navbar */}
-      <nav className="absolute top-6 sm:top-8 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 sm:gap-8 px-6 sm:px-8 py-2.5 rounded-full border border-black/10 bg-white/70 backdrop-blur-md shadow-sm transition-all duration-300">
-        <button onClick={() => navigateTo(0, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
-          Home
-        </button>
-        <button onClick={() => navigateTo(2, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
-          Contents
-        </button>
-        <button onClick={() => navigateTo(totalSlides - 1, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer">
-          Contact
-        </button>
-      </nav>
+      {/* Minimalistic Right Sidebar Nav */}
+      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] flex group">
+        <div className="relative flex items-center bg-white/70 backdrop-blur-md rounded-l-2xl border border-r-0 border-black/10 shadow-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden transform translate-x-[calc(100%-32px)] group-hover:translate-x-0">
+          
+          {/* Chevron (Visible when collapsed) */}
+          <div className="w-8 h-16 flex items-center justify-center flex-shrink-0 text-text-primary/50 group-hover:opacity-0 transition-opacity duration-300">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </div>
+
+          {/* Links (Visible when expanded) */}
+          <nav className="flex flex-col gap-6 py-8 pr-8 pl-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 min-w-max">
+            <button onClick={() => navigateTo(0, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer text-right">
+              Home
+            </button>
+            <button onClick={() => navigateTo(2, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer text-right">
+              Contents
+            </button>
+            <button onClick={() => navigateTo(totalSlides - 1, true)} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer text-right">
+              Contact
+            </button>
+          </nav>
+        </div>
+      </div>
 
       {/* Slide Track */}
       <div
