@@ -105,24 +105,8 @@ function App() {
       } else if (e.key === "ArrowLeft") {
         e.preventDefault();
         navigateTo(currentSlide - 1);
-      } else if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', ' '].includes(e.key)) {
-        // Find the scrollable container in the current slide
-        const slides = document.querySelectorAll('.slide');
-        if (slides[currentSlide]) {
-          const scrollable = slides[currentSlide].querySelector('.custom-scrollbar, .hide-scrollbar');
-          if (scrollable) {
-            e.preventDefault();
-            // Spacebar behaves like PageDown, Shift+Space behaves like PageUp
-            const isUp = e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey);
-            const isPage = e.key.includes('Page') || e.key === ' ';
-            const amount = isPage ? window.innerHeight * 0.8 : (e.repeat ? 60 : 120);
-            const dir = isUp ? -1 : 1;
-            // Use 'auto' if holding the key down so it doesn't jitter by constantly resetting the smooth animation
-            const behavior = e.repeat ? 'auto' : 'smooth';
-            scrollable.scrollBy({ top: amount * dir, behavior });
-          }
-        }
       }
+      // Let the browser handle Up/Down/PageUp/PageDown natively for smooth hardware-accelerated scrolling
     };
 
     window.addEventListener("keydown", handleKeyDown);

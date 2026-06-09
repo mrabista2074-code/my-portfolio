@@ -1,9 +1,19 @@
 // src/components/CVSlide.jsx
 // Slide 2: Curriculum Vitae — photo+bio on left, details on right
 
+import { useState, useRef, useEffect } from "react";
 import SlideHeader from "./SlideHeader";
 
 function CVSlide({ isActive, hasBeenActive }) {
+  const scrollContainerRef = useRef(null);
+
+  // Auto-focus the scroll container when slide becomes active so keyboard scrolling works natively
+  useEffect(() => {
+    if (isActive && scrollContainerRef.current) {
+      scrollContainerRef.current.focus({ preventScroll: true });
+    }
+  }, [isActive]);
+
   return (
     <div className="slide bg-bg-primary">
       <SlideHeader
@@ -13,7 +23,11 @@ function CVSlide({ isActive, hasBeenActive }) {
       />
 
       <div className="slide-content">
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 sm:px-10 lg:px-16 py-4 sm:py-6 overflow-y-auto hide-scrollbar">
+        <div 
+          ref={scrollContainerRef}
+          tabIndex={0}
+          className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 px-4 sm:px-10 lg:px-16 py-4 sm:py-6 overflow-y-auto hide-scrollbar outline-none"
+        >
 
           {/* LEFT COLUMN: Photo + Bio */}
           <div className={`flex flex-col gap-4 sm:gap-6 ${hasBeenActive ? "animate-slide-left" : "opacity-0"}`}>

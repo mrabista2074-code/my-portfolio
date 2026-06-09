@@ -112,6 +112,13 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
     }
   };
 
+  // Auto-focus the scroll container when slide becomes active so keyboard scrolling works natively
+  useEffect(() => {
+    if (isActive && scrollContainerRef.current) {
+      scrollContainerRef.current.focus({ preventScroll: true });
+    }
+  }, [isActive]);
+
   return (
     <div className="slide bg-bg-primary overflow-hidden">
       {/* Background container */}
@@ -119,7 +126,8 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
         {hasBeenActive && (
           <div 
             ref={scrollContainerRef}
-            className="w-full h-full overflow-y-auto overflow-x-hidden custom-scrollbar p-2 sm:p-12 lg:p-20 pt-16 sm:pt-28 pb-20 sm:pb-32"
+            tabIndex={0}
+            className="w-full h-full overflow-y-auto overflow-x-hidden custom-scrollbar p-2 sm:p-12 lg:p-20 pt-16 sm:pt-28 pb-20 sm:pb-32 outline-none"
             onScroll={handleScroll}
             style={{ touchAction: 'pan-y' }}
           >
