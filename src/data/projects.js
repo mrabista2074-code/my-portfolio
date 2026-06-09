@@ -83,6 +83,10 @@ const projects = [
     images: [],
     pdfs: [
       {
+        url: "/PDF/Midea.pdf",
+        headerTitle: "Rendered Images"
+      },
+      {
         url: "/PDF/MIDEA 1ST FLOOR FURNITURE DETAIL(CONSTRUCTION DRAWING).pdf",
         headerTitle: "Construction Drawing"
       }
