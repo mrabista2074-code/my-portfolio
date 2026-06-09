@@ -296,21 +296,21 @@ function App() {
     <div className="h-screen h-dvh overflow-hidden bg-bg-primary">
       {/* Minimalistic Right Sidebar Nav (Mobile & Desktop) */}
       <div 
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-[100] flex group cursor-pointer"
+        className="fixed right-0 top-32 sm:top-1/2 sm:-translate-y-1/2 z-[100] flex group cursor-pointer"
         onClick={() => setIsNavOpen(!isNavOpen)}
         onMouseLeave={() => setIsNavOpen(false)}
       >
-        <div className={`relative flex items-center bg-white/70 backdrop-blur-md rounded-l-2xl border border-r-0 border-black/10 shadow-sm transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden transform ${isNavOpen ? 'translate-x-0' : 'translate-x-[calc(100%-32px)] group-hover:translate-x-0'}`}>
+        <div className={`relative flex items-center rounded-l-2xl shadow-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden transform ${isNavOpen ? 'translate-x-0 bg-white/80 backdrop-blur-md border border-r-0 border-black/10 shadow-sm' : 'translate-x-[calc(100%-32px)] group-hover:translate-x-0 group-hover:bg-white/80 group-hover:backdrop-blur-md group-hover:border group-hover:border-r-0 group-hover:border-black/10 group-hover:shadow-sm'}`}>
           
           {/* Chevron (Visible when collapsed) */}
-          <div className={`w-8 h-16 flex items-center justify-center flex-shrink-0 text-text-primary/50 transition-opacity duration-300 ${isNavOpen ? 'opacity-0' : 'group-hover:opacity-0'}`}>
+          <div className={`w-8 h-16 flex items-center justify-center flex-shrink-0 text-text-primary/40 bg-white/30 backdrop-blur-sm group-hover:bg-transparent transition-all duration-300 ${isNavOpen ? 'opacity-0 w-0' : 'group-hover:opacity-0 group-hover:w-0'} rounded-l-xl`}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </div>
 
           {/* Links (Visible when expanded) */}
-          <nav className={`flex flex-col gap-6 py-8 pr-8 pl-0 transition-opacity duration-500 delay-100 min-w-max ${isNavOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+          <nav className={`flex flex-col gap-6 py-6 pr-8 pl-6 transition-opacity duration-500 min-w-max ${isNavOpen ? 'opacity-100 delay-100' : 'opacity-0 group-hover:opacity-100 group-hover:delay-100 hidden group-hover:flex'}`}>
             <button onClick={(e) => { e.stopPropagation(); navigateTo(0, true); setIsNavOpen(false); }} className="text-[10px] sm:text-xs font-medium tracking-[0.2em] uppercase text-text-primary hover:text-accent-color transition-colors cursor-pointer text-right">
               Home
             </button>
