@@ -151,23 +151,28 @@ function App() {
       accumulatedDeltaX += e.deltaX;
       accumulatedDeltaY += e.deltaY;
 
-      if (wheelTimeout) clearTimeout(wheelTimeout);
+      const totalAbsX = Math.abs(accumulatedDeltaX);
+      const totalAbsY = Math.abs(accumulatedDeltaY);
 
-      wheelTimeout = setTimeout(() => {
-        const totalAbsX = Math.abs(accumulatedDeltaX);
-        const totalAbsY = Math.abs(accumulatedDeltaY);
-
-        if (totalAbsX > totalAbsY && totalAbsX > 30) {
+      // Act instantly as soon as threshold is reached, instead of waiting
+      if (totalAbsX > 20 || totalAbsY > 20) {
+        if (totalAbsX > totalAbsY) {
           if (accumulatedDeltaX > 0) navigateTo("next", false);
           else navigateTo("prev", false);
-        } else if (totalAbsY >= totalAbsX && totalAbsY > 30) {
+        } else {
           if (accumulatedDeltaY > 0) navigateTo("next", false);
           else navigateTo("prev", false);
         }
-        
         accumulatedDeltaX = 0;
         accumulatedDeltaY = 0;
-      }, 50); // shortened from 80 for faster response
+      }
+
+      if (wheelTimeout) clearTimeout(wheelTimeout);
+      // Clear accumulated deltas if the user stops swiping
+      wheelTimeout = setTimeout(() => {
+        accumulatedDeltaX = 0;
+        accumulatedDeltaY = 0;
+      }, 50);
     };
 
     window.addEventListener("wheel", handleWheel, { passive: false });
