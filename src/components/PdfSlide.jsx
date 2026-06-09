@@ -61,6 +61,9 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
   const [numPages, setNumPages] = useState(null);
   const [pageWidth, setPageWidth] = useState(1000);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const scrollContainerRef = useRef(null);
+  const scrollIdleTimer = useRef(null);
 
   useEffect(() => {
     // Calculate page width based on window size
@@ -79,10 +82,30 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
   }
 
   const handleScroll = (e) => {
-    // Vanish after scrolling past half the screen height
-    const isScrolled = e.target.scrollTop > (window.innerHeight / 2);
+    const scrollTop = e.target.scrollTop;
+
+    // Vanish "scroll to read" after scrolling past half the screen height
+    const isScrolled = scrollTop > (window.innerHeight / 2);
     if (isScrolled !== hasScrolled) {
       setHasScrolled(isScrolled);
+    }
+
+    // Hide the "go to top" button while actively scrolling
+    setShowTopBtn(false);
+
+    // Show it after the user stops scrolling for 800ms (only if scrolled down)
+    if (scrollIdleTimer.current) clearTimeout(scrollIdleTimer.current);
+    if (scrollTop > 200) {
+      scrollIdleTimer.current = setTimeout(() => {
+        setShowTopBtn(true);
+      }, 800);
+    }
+  };
+
+  const scrollToTop = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      setShowTopBtn(false);
     }
   };
 
@@ -92,6 +115,7 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
       <div className="absolute inset-0 flex flex-col items-center">
         {hasBeenActive && (
           <div 
+            ref={scrollContainerRef}
             className="w-full h-full overflow-y-auto overflow-x-hidden custom-scrollbar p-2 sm:p-12 lg:p-20 pt-16 sm:pt-28 pb-20 sm:pb-32"
             onScroll={handleScroll}
             style={{ touchAction: 'pan-y' }}
@@ -130,7 +154,18 @@ function PdfSlide({ pdfUrl, pdfConfig = {}, projectTitle, isActive, hasBeenActiv
         )}
       </div>
 
-      {/* Removed gradients */}
+      {/* Go to Top button — appears when viewer stops scrolling */}
+      {hasScrolled && (
+        <button
+          onClick={scrollToTop}
+          className={`absolute bottom-20 sm:bottom-16 right-4 sm:right-8 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-black/20 bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-white hover:border-black/40 cursor-pointer ${showTopBtn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'}`}
+          aria-label="Scroll to top"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-black/60">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      )}
 
       {/* Scroll Indicator Gesture */}
       {isActive && !hasScrolled && numPages && (
