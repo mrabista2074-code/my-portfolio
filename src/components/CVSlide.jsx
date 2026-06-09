@@ -39,7 +39,7 @@ function CVSlide({ isActive, hasBeenActive }) {
             {/* Profile Photo */}
             <div className="w-28 sm:w-40 lg:w-48 aspect-[3/4] overflow-hidden bg-bg-secondary border border-border-color/30">
               <img
-                src="/images/profile2.jpg"
+                src="/images/profile2.webp"
                 alt="Aashish Bista portrait"
                 className="w-full h-full object-cover object-[15%_center] scale-[1.4] origin-[15%_center]"
                 loading="lazy"

@@ -20,7 +20,7 @@ const projects = [
     ],
     description: "A dynamic corporate reception space designed for MetLife, balancing professional branding with inviting warmth.",
     fullDescription: "This office reception project for MetLife focuses on creating an impactful first impression. The design utilizes an expansive slatted wood ceiling to guide the eye toward the illuminated branding wall. A custom terrazzo-style reception desk is paired with vibrant artwork and comfortable blue lounge seating, perfectly integrating the company's brand colors into a warm, modern architectural space.",
-    coverImage: "/images/metlife.png",
+    coverImage: "/images/metlife.webp",
     images: [],
     pdfs: [
       { 
@@ -53,7 +53,7 @@ const projects = [
     ],
     description: "A modern residential project focused on creating a warm, functional, and elegant living space.",
     fullDescription: "The Tangal Residence project involved the complete interior design of a modern home. The focus was on creating a seamless flow between the living room, kitchen, and dining areas, while ensuring the master bedroom served as a comfortable private retreat.",
-    coverImage: "/images/tangal.png",
+    coverImage: "/images/tangal.webp",
     images: [],
     pdfs: [
       { 
@@ -79,7 +79,7 @@ const projects = [
     ],
     description: "A sleek, modern corporate showroom designed to showcase Midea's innovative appliance solutions.",
     fullDescription: "This project involved designing an engaging and highly functional showroom for Midea. The design utilizes dynamic, curved architectural elements and the brand's signature blue and white color palette to create a futuristic, professional environment.",
-    coverImage: "/images/midea.jpg",
+    coverImage: "/images/midea.webp",
     images: [],
     pdfs: [
       {
@@ -111,7 +111,7 @@ const projects = [
     ],
     description: "A sleek, modern corporate office reception designed to convey professionalism and calm.",
     fullDescription: "The Jaquar office project focuses on the critical first impression of the reception area. The design incorporates a bespoke curved reception desk and an illuminated logo branding wall against textured plaster. Warmth is introduced through vertical wood slat panels and a comfortable waiting lounge, balancing corporate identity with an inviting, modern aesthetic.",
-    coverImage: "/images/jaquar.jpg",
+    coverImage: "/images/jaquar.webp",
     pdf: "/PDF/Jaquar 3D RENDERS.pdf",
     images: [],
   },
@@ -132,7 +132,7 @@ const projects = [
     ],
     description: "An internship collaboration designing a vibrant cafe integrated beneath serene residential lofts.",
     fullDescription: "During my internship, I assisted in the spatial planning and material selection for this dual-purpose project. The ground floor cafe features an energetic, industrial vibe with black steel and polished concrete, while the upper lofts use warm teak wood and textured glass for a softer residential feel.",
-    coverImage: "/images/cover.jpg",
+    coverImage: "/images/cover.webp",
     pdf: "/PDF/Whole project khumaltar.pdf",
     images: [],
   },
